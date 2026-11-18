@@ -1,5 +1,7 @@
 # Chapter 18. Steering a Running Agent: Steering and Goals
 
+[← Previous](17-acp.md) · [Contents](README.md) · [Next →](19-junie-live.md)
+
 An agent works for minutes, sometimes for hours. The user sees that it has gone the wrong way, or remembers an important requirement, or wants to change priorities. What can be done? In an ordinary chat the options are: wait for the turn to end and write again, or stop the agent and start over. Both are bad: the first is slow, the second throws away the work already done.
 
 This chapter covers two mechanisms that tackle this problem from different sides. **Steering** is sending a message while work is in progress, without waiting for the turn to end. **Goal** makes the goal itself a state of the session: the agent knows what it is aiming for, and the client can see and change it. Both are built as ACP extensions (Chapter 17), and both taught a lesson about what a "turn" is and what a "task" is.
@@ -14,6 +16,18 @@ Steering allows the client to send a follow-up while the task is still running. 
 The wording of the contract is strict: a message is **never lost**, and a request that arrives "too late" is **never returned as a JSON-RPC error**. This is an important decision. If lateness were an error, the client would have to decide for itself what to do, and every client would decide differently. So the race between the end of a turn and a message is resolved inside the agent.
 
 Why this is hard. The agent works in a loop (Chapter 2), and a message can arrive at any moment: during a model call, during a file edit, between steps. For each case a decision is needed: add the message to the current turn or start a new one. The decision depends on what has already happened. The document describes this as "decisions by turn phase" (`Decision by turn phase`).
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant A as Agent
+  C->>A: _session/steering (during a turn)
+  alt turn still running
+    A-->>C: injected
+  else turn already finished
+    A-->>C: startedNewTurn
+  end
+```
 
 ## 18.2. Commands during work
 
@@ -72,8 +86,8 @@ A rule worth remembering: **a closing command must stop everything it promises t
 ## 18.7. What the second wave brought
 
 The chronology:
-- **21 July 2026** — messages during work, `steering` in ACP (MTRH-3031).
-- **20 August 2026** — the document on the goal extension (JUNIE-4221), referring to similar implementations in other agents. Note: the contract is described identically in two repositories, which is an attempt at standardization rather than a proprietary protocol.
+- **21 July 2026** — messages during work, `steering` in ACP.
+- **20 August 2026** — the document on the goal extension, referring to similar implementations in other agents. Note: the contract is described identically in two repositories, which is an attempt at standardization rather than a proprietary protocol.
 - **1 October 2026** — the error code `steering_turn_busy` appears in ACP v2 (a commit about the terminal, commands, and prompts).
 - **2 November 2026** — commands during work receive the class `SteerableAcpCommand`.
 

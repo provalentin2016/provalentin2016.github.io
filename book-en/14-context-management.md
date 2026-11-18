@@ -1,5 +1,7 @@
 # Chapter 14. Context Management: What the Agent Remembers and What It Forgets
 
+[← Previous](13-mcp-and-ide.md) · [Contents](README.md) · [Next →](15-sandbox.md)
+
 A model has a context window: how many tokens it can accept in one request. An agent that works for a long time inevitably exceeds that window. The step history grows, tool results can be enormous, and pictures enter the conversation. Something has to be removed. The questions are what to remove, in what order, and how not to break the task.
 
 The word "memory" is used in the project in three senses, and it is useful to separate them:
@@ -77,7 +79,7 @@ Two levels of protection are needed for different reasons. Proactive compression
 
 The limit of two retries matters too. If compression does not help after two attempts, the problem is not the history, and an infinite retry would only burn money.
 
-The history of this mechanism has two layers. Handling of the error "context exceeded" has existed since February 2025 (MTRH-541). But the retry of a step with compression and the proactive compression before a step appeared in a single commit of November 2026 ("unify context budget pruning and naming"). So the system could at first only report the error, and it learned to recover only recently.
+The history of this mechanism has two layers. Handling of the error "context exceeded" has existed since February 2025. But the retry of a step with compression and the proactive compression before a step appeared in a single commit of November 2026 ("unify context budget pruning and naming"). So the system could at first only report the error, and it learned to recover only recently.
 
 ## 14.5. The agent's memory: notes between sessions
 
@@ -108,7 +110,7 @@ The problem here is a typical one: a tool that found nothing because there is no
 A summary:
 
 - **July 2024** — the enumeration of history strategies.
-- **February 2025** — handling of the context-overflow error (MTRH-541).
+- **February 2025** — handling of the context-overflow error.
 - **August 2025** — indexing and search over the code.
 - **October 2025** — `UnlimitedStepsHistoryProcessor`, the enumeration of strategies, the agent's memory.
 - **November 2025** — index parsers for three languages.

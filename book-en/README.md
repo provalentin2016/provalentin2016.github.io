@@ -6,6 +6,8 @@ Status: draft. The chapters were translated from the Russian edition and are als
 
 ## Contents
 
+0. [Introduction](00-introduction.md) — what the book is, how it was written, and how to read it.
+
 Part I. The Matterhorn prototype (2024)
 
 1. [From PRD to Application](01-from-prd-to-app.md) — the generation pipeline, workers, and artifacts.
@@ -38,10 +40,16 @@ Part IV. Protocols, services, and the team (2025–2026)
 19. [Junie Live: The Agent as a Service](19-junie-live.md) — the data model, the event log, snapshots through signed links, commands, and gaps. The server-side code is not in this repository.
 20. [How a Team and Agents Ship Code Together](20-team-process.md) — AGENTS.md, skills, PR rules, agent review, and CI checks.
 
+23. [Conclusion](23-conclusion.md) — what stayed the same, what was learned the hard way, and principles in brief.
+
 Appendices
 
 21. [Glossary](21-glossary.md)
 22. [Timeline](22-timeline.md)
+
+## Companion code
+
+The folder [`companion/`](companion/README.md) holds a minimal agent in Python (about 250 lines, no dependencies) with 12 unit tests. The exercises in Chapters 2, 5, 8, 10, and 14 build on it. Run the tests with `python3 -m unittest discover -s tests -v` from that folder.
 
 ## Notes for readers
 

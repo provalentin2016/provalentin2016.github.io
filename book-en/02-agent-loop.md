@@ -1,5 +1,7 @@
 # Chapter 2. The Agent Loop
 
+[← Previous](01-from-prd-to-app.md) · [Contents](README.md) · [Next →](03-parallel-and-benchmarks.md)
+
 Chapter 1 had a pipeline: stages run one after another, and each produces an artifact. This chapter is about something different: a loop in which the model itself decides which action to take next, sees the result, and carries on. That is what an agent is in the narrow sense.
 
 The difference between a pipeline and an agent is fundamental. In a pipeline the order of steps is known in advance. In an agent the model chooses the next step as the work proceeds, and it must be able to stop.
@@ -68,7 +70,7 @@ A second wave of format changes came through SWE-agent. The commit `change actio
 For Matterhorn the idea was not to reinvent the loop but to adopt a known approach. In June 2024 a series of commits with the prefix `reproduce swe-agent:` appeared. They show exactly what was carried over:
 
 - `add shellInterface, add all commands` (10 June). A bash interface: the agent runs commands in a persistent session.
-- `add exit code control for single-line bash commands` (17 June). The exit code of each command is returned to the agent.
+- `add exit code control for sigle-line bash commands` (17 June). The exit code of each command is returned to the agent.
 - `fixes for multiline commands` (14 June). Multi-line commands are executed separately from single-line ones.
 - `set 40 steps maximum (see figure 14, 15 from swe-agent paper)` (18 June). The step limit is taken from the SWE-agent paper: its graphs show how quality grows and where it plateaus.
 
@@ -80,7 +82,7 @@ A note: the history contains no tables comparing results. One cannot claim that 
 
 The hardest part of an agent is editing files. The model can write a file in full, replace a fragment, or insert lines. Each way has its own failure modes.
 
-In August 2024 (`MTHRN-269`) a series of commits about editing approaches appeared:
+In August 2024 a series of commits about editing approaches appeared:
 
 - `add ReplaceLinesWorker` (20 August 2024). Replacement by line numbers.
 - `fix bug with wrong syntax error in SearchReplaceWorker` (19 August 2024). Replacement by a fragment: the model must reproduce the original text exactly.

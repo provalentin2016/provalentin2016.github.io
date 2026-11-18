@@ -1,5 +1,7 @@
 # Appendix A. Glossary
 
+[← Previous](20-team-process.md) · [Contents](README.md) · [Next →](22-timeline.md)
+
 Terms are listed alphabetically. The chapter where each term is discussed is given in parentheses.
 
 **ACP (Agent Client Protocol)** — the protocol between an agent and an editor: sessions, the stream of messages, tool calls, confirmations. Junie implements it and adds its own extensions (Ch. 17).

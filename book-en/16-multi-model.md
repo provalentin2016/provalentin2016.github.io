@@ -1,5 +1,7 @@
 # Chapter 16. Many Models: Selection, Configuration, and Cost
 
+[← Previous](15-sandbox.md) · [Contents](README.md) · [Next →](17-acp.md)
+
 Models change faster than the agent does. Over two years the project's history acquired models from several families, each with its own reasoning parameters, its own tool constraints, and its own price. A new model appears every few months, and if each one required a branch of code, the agent would quickly turn into a collection of exceptions.
 
 This chapter is about how the agent holds many models within one architecture: how selection is separated from execution, how effort levels are organized, why an economy mode appeared, and how the model catalog became a public contract. The last point is unexpected, but important.

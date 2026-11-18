@@ -1,5 +1,7 @@
 # Chapter 19. Junie Live: The Agent as a Service
 
+[← Previous](18-steering-and-goals.md) · [Contents](README.md) · [Next →](20-team-process.md)
+
 Until now the agent has run on the user's machine: in the IDE, in a terminal, in an editor. Junie Live is an attempt to move it onto a server. The agent runs as a long-lived process, it is visible in a dashboard, a command can be sent to it, its state is kept between runs, and the whole team talks to it through Slack.
 
 One important point must be stated at the outset, because this chapter cannot avoid it. **The server-side part of Junie Live is not in this repository.** `junie-repo` contains three things: a detailed document of the data model (`docs/junie-live-data-model.md`), the configuration of the agent that serves the Slack bot (`.junie-live/`), and the chat orchestrator (`ej-chat-core`). So this chapter relies on the design recorded in the document and on what is visible from the agent's side. Conclusions about the server itself come only from the document.

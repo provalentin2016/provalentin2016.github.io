@@ -1,5 +1,7 @@
 # Chapter 9. Subagents: Working with Several Hands
 
+[← Previous](08-tools-and-edits.md) · [Contents](README.md) · [Next →](10-testing-nondeterministic.md)
+
 An agent with a long history sooner or later runs into two problems: its context fills up, and its tasks start interfering with one another. Exploring the code, editing files, and checking the result in one conversation drags along everything that came before. The obvious way out is to launch nested agents: subagents. The main agent hands over a task, the subagent works in its own conversation, and it returns a result.
 
 That sounds simple. The difficulty lies in **what exactly is passed between the agents**, how the results come back, and how to keep two agents from damaging the same files. This chapter draws on the document `docs/subagents.md` and on the history of how the mechanism appeared.

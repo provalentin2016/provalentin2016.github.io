@@ -1,5 +1,7 @@
 # Chapter 7. The Execution Context: Who Holds What and When It Is Released
 
+[← Previous](06-modules.md) · [Contents](README.md) · [Next →](08-tools-and-edits.md)
+
 In Chapter 2 the agent became a loop; in Chapter 5 we talked about cancellation and budgets. But a loop raises a question that demonstration code usually does not ask: **who owns the resources that are open while the work runs?** A bash process, an HTTP connection, an MCP server session, a log file, an event subscription. If the agent finishes the task but the process stays alive, the user sees a "zombie" in the system. If a resource is closed while another step still uses it, you get an error in some random place.
 
 In Matterhorn this task is handled by a pair of classes: `RootExecutionContext` and `ExecutionContext`. This chapter explains how they are built and why their rules are written down so carefully.
@@ -30,6 +32,13 @@ class ExecutionContextElement(val uuid: UUID) : AbstractCoroutineContextElement(
 ```
 
 The element is needed so that the context reaches the coroutines the agent starts, including the parallel tasks from Chapter 3.
+
+```mermaid
+flowchart TD
+  Root[RootExecutionContext: owns the task's resources] --> N1[node: request 1]
+  Root --> N2[node: request 2]
+  N2 --> N3[child node: request 3]
+```
 
 ## 7.2. Two ways to register a resource
 
@@ -97,7 +106,7 @@ Note that cleanup runs outside the registration lock. The test `concurrent close
 
 ## 7.5. A separate scenario: the plan watcher
 
-In September 2026 the commit `JUNIE-5206 (PR B of 3): release PlanContext and coroutine children on task/root close` added a document describing a standalone agent scenario of its own. It is worth separate attention because it shows how the root and its child coroutines finish together.
+In September 2026 the commit `(PR B of 3): release PlanContext and coroutine children on task/root close` added a document describing a standalone agent scenario of its own. It is worth separate attention because it shows how the root and its child coroutines finish together.
 
 The root of the standalone agent owns `PlanContext` and borrows the shared project services. The class `StandaloneAgentRunner` closes the root in a `finally` block, that is, whatever the outcome. `PlanContext.close()` requests cancellation of the watcher but does not wait for cleanup and does not cancel either the parent or the siblings. In the other direction, cancelling the parent stops the watcher.
 

@@ -1,5 +1,7 @@
 # Chapter 13. Tools From Outside: MCP and the IDE as a Tool Provider
 
+[← Previous](12-standalone-cli.md) · [Contents](README.md) · [Next →](14-context-management.md)
+
 The agent can read files, edit them, and run commands. But real tasks need other capabilities too: a database, GitHub, a browser, documentation, the build, the IDE's debugger. Writing a dedicated tool for each one inside the agent's core is a dead end: the core bloats, and every integration requires a new product version.
 
 The MCP protocol (Model Context Protocol) solves this differently: an external server declares its own tools, and the agent connects to it as a client. This chapter covers two sides of the idea. The first: Junie as an MCP client that connects external servers. The second: the IDE as an MCP provider that gives the agent its own capabilities. Each side has its own difficulties, and both are clearly visible in the history.

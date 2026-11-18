@@ -1,5 +1,7 @@
 # Chapter 1. From PRD to Application
 
+[← Previous](00-introduction.md) · [Contents](README.md) · [Next →](02-agent-loop.md)
+
 Let's start not with the agent, but with its first real task. In March 2024 an internal plugin, then called **Matterhorn**, could do one thing: take a product description (PRD) and turn it into a working application. Not a sketch, not a list of files, but a project that builds, passes its tests, and runs.
 
 This chapter is about how such a pipeline was built and which problems surfaced once it started working on real specifications. Almost everything described below can be traced in the repository history.
@@ -24,6 +26,15 @@ PRD
 
 An important detail: the artifacts form a dependency tree. If `endpoints.md` changes, only what depends on it needs to be regenerated, not everything. This is the seed of the invalidation that later appeared as "rerun for a single step".
 
+```mermaid
+flowchart TD
+  PRD --> Roadmap[RoadmapWorker]
+  Roadmap --> OpenAPI[OpenApiWorker]
+  OpenAPI --> TestPlans[test plans per endpoint, in parallel]
+  Roadmap --> Backend[BackendWorker]
+  Roadmap --> Frontend[FrontendWorker]
+```
+
 ## 1.2. Parallelism from the start
 
 The first commits on this topic date from 25 March 2024: `Generate test plans for endpoints in parallel`. Test plans for different endpoints do not depend on each other, so they can be generated at the same time. Two weeks later came the next step: `Generate backend and frontend simultaneously` (8 April 2024).
@@ -41,7 +52,7 @@ The template turned out to be a tricky place. A few commits show how the underst
 - `Remove stub rows from App from the template because the model always keeps it as it is` (31 May 2024). The model did not remove placeholder rows from the template because it considered them part of the assignment. The answer: remove the placeholders from the template instead of asking the model to do it.
 - `Allow LLM generate empty content (for example, it might be needed for .gitkeep file)` (11 April 2024). An empty file is a valid result, and the pipeline must not fail when the model returns an empty string.
 
-The configuration story is separate. In May 2024 a commit, `MTHRN-99 Embed recipe for config into template and guidelines`, embedded a description of the configuration directly into the template and the instructions. A month later it was rolled back, and the commit `Rollback config from templates and return to the good old process.env` (4 June 2024) took its place. The lesson: if the model can read an environment variable and cannot get its name wrong, do not make it write configuration from instructions.
+The configuration story is separate. In May 2024 a commit, `Embed recipe for config into template and guidelines`, embedded a description of the configuration directly into the template and the instructions. A month later it was rolled back, and the commit `Rollback config from templates and return to the good old process.env` (4 June 2024) took its place. The lesson: if the model can read an environment variable and cannot get its name wrong, do not make it write configuration from instructions.
 
 ## 1.4. Errors and reruns
 
@@ -61,7 +72,7 @@ The generator did not work on every specification. The history shows three chara
 
 **The size of the plan.** The commit `[Experiment] Make roadmap smaller, tasks bigger` (21 June 2024) was an experiment with larger tasks. Small tasks created more points of failure, while large ones gave the model more chances to lose something. The choice was empirical; the commit contains no metrics.
 
-**The number of endpoints.** `Ask LLM to reduce amount of endpoints or don't generate backend at all` (31 July 2024). If the PRD was too ambitious, the agent proposed reducing the API or dropping the backend altogether. At that point it was no longer just code generation but a negotiation over the specification.
+**The number of endpoints.** `Ask LLM to reduce amoint of endpoints or don't generate backend at all` (31 July 2024). If the PRD was too ambitious, the agent proposed reducing the API or dropping the backend altogether. At that point it was no longer just code generation but a negotiation over the specification.
 
 **Images.** Around August 2024, recipes for generating images through OpenAI appeared (`Add a possibility to generate images for websites using Open AI`, 9 August 2024). Images became a separate artifact type.
 

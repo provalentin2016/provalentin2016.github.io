@@ -1,5 +1,7 @@
 # Chapter 17. ACP: The Protocol Between the Agent and the Editor
 
+[← Previous](16-multi-model.md) · [Contents](README.md) · [Next →](18-steering-and-goals.md)
+
 While the agent works in a terminal, its only interlocutor is the person at the keyboard. But an agent that embeds into editors must talk to different clients: IDEs, chat panels, third-party editors. Each client displays answers in its own way, each wants its own settings, and each confirms actions in its own way. If you write a separate integration for every client, the agent turns into a set of adapters.
 
 The Agent Client Protocol (ACP) is the common protocol between an agent and a client: initialization, sessions, the stream of messages, tool calls, confirmations. Junie implements it and adds its own extensions on top of the base protocol. This chapter is about how such a layer is built, which rules keep it in order, and where it still "lies".

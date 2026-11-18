@@ -1,5 +1,7 @@
 # Chapter 8. Tools and Edits: How the Agent Changes the World
 
+[← Previous](07-execution-context.md) · [Contents](README.md) · [Next →](09-subagents.md)
+
 An agent that only thinks is harmless. Harm and benefit come from actions: writing a file, running a command, making a network request. This chapter is about how such actions are described, how they are executed, and how they are checked before they change anything.
 
 Almost everything described here has survived several rewrites. So the order is: first the model of actions, then file edits, then user confirmation. At the end, an error that shows why classifying commands by their text is fragile.

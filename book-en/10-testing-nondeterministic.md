@@ -1,5 +1,7 @@
 # Chapter 10. Testing a Non-Deterministic Agent
 
+[← Previous](09-subagents.md) · [Contents](README.md) · [Next →](11-naming-and-rename.md)
+
 An ordinary test checks that a function produces one output for one input. With an agent this does not work. The same task can yield different solutions, different sequences of actions, and different wording. Every run costs money and takes minutes. Testing "by eye" is impossible, and running a full pass on every change is expensive.
 
 Matterhorn solved this in layers. Below are five levels, from cheap to expensive, and the most interesting of them is the cache of model requests, which turns non-deterministic calls into reproducible ones. The chapter describes them in order.

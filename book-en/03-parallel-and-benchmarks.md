@@ -1,5 +1,7 @@
 # Chapter 3. Parallelism and Benchmarks
 
+[← Previous](02-agent-loop.md) · [Contents](README.md) · [Next →](04-recipes-knowledge.md)
+
 An agent that works on one thread and performs one task teaches almost nothing. To know how good it is, you have to run it many times on different tasks. To do that in reasonable time, you need parallelism. And in an agent, parallelism both speeds things up and breaks everything that assumes sequential order: logs, the interface, the shared state of the project.
 
 This chapter is about how Matterhorn arrived at parallel runs. It all began with a benchmark, not with a product.
@@ -104,7 +106,7 @@ An interesting combination appears here: CI both checks the agent (the tests of 
 
 ## 3.6. Parallel edits of one project
 
-The hardest case is when several parallel agents change the same project. The commit of 31 July 2024, `MTHRN-23: Run tests in parallel and merge changes`, worked like this: each attempt operates on a copy of the sources (`source.copy()`), and its result is merged back into the main project. If the merge fails, a fallback path kicks in: a separate agent step, `Apply changes`, receives the text of the edits that did not apply and asks the model to reproduce the same result again. In other words, when a merge fails, another attempt by the agent resolves it, not a human. This is convenient, but it makes a merge error expensive: it costs one more model call.
+The hardest case is when several parallel agents change the same project. The commit of 31 July 2024, `Run tests in parallel and merge changes`, worked like this: each attempt operates on a copy of the sources (`source.copy()`), and its result is merged back into the main project. If the merge fails, a fallback path kicks in: a separate agent step, `Apply changes`, receives the text of the edits that did not apply and asks the model to reproduce the same result again. In other words, when a merge fails, another attempt by the agent resolves it, not a human. This is convenient, but it makes a merge error expensive: it costs one more model call.
 
 Later came `Refactoring of EditWorkers` (September 2024) and `EditWorker: Fixed issue with same artifactId for different critique attempts` (26 September 2024). The last one is telling: two parallel variants of an edit received the same artifact identifier, and one overwrote the other. Such errors cannot be caught on a single thread.
 

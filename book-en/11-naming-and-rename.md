@@ -1,5 +1,7 @@
 # Chapter 11. Names: Renaming Without Breaking Users
 
+[← Previous](10-testing-nondeterministic.md) · [Contents](README.md) · [Next →](12-standalone-cli.md)
+
 A product that grew out of an internal project almost always carries two names: a working (code) name and a public one. Matterhorn's working name was in every file, while its public name became Junie. The renaming took about two years and is still not finished. This chapter is not about how to name a product. It is about which names are easy to change, which are very expensive to change, and why.
 
 The main conclusion: **the name in the code, the name in the interface, the name in the data, and the name in the external contract change at different speeds and with different consequences**. They must not be mixed up.

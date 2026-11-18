@@ -1,5 +1,7 @@
 # Chapter 4. Recipes: Knowledge the Agent Should Not Invent
 
+[← Previous](03-parallel-and-benchmarks.md) · [Contents](README.md) · [Next →](05-reliability.md)
+
 A model knows a lot, but not everything, and it certainly does not know how to wire Google OAuth into an Express application today, or which version of a library to install. If nobody tells it, it will invent. Sometimes it invents well; more often it invents APIs that do not exist, or libraries that should not be used.
 
 Matterhorn solved this with **recipes**: verified instructions with code examples that the agent can attach to a task. A recipe is not just documentation. It is a structured object with a description, dependencies, code fragments, and rules for applying it.
@@ -18,7 +20,7 @@ The first answer was obvious: put the documentation into the prompt. But documen
 
 ## 4.2. The catalog and the index
 
-The first commit is `Basic implementation of recipe catalog` (18 April 2024, task MTHRN-75). The idea: recipes live in the plugin's resources, each is described in a `*.recipe.yaml` file, and the model receives only an index: a short list of paths and descriptions.
+The first commit is `Basic implementation of recipe catalog` (18 April 2024, task). The idea: recipes live in the plugin's resources, each is described in a `*.recipe.yaml` file, and the model receives only an index: a short list of paths and descriptions.
 
 The scheme in simplified form:
 
@@ -31,7 +33,7 @@ Task from the user
         └─ recipes + their dependencies → into the generator's prompt ← full instructions
 ```
 
-The worker `RecipeLookupWorker` appeared in the commit of 29 April 2024 (MTHRN-76). The key detail in the code: the model must return a JSON array of paths, and each path is checked against the index:
+The worker `RecipeLookupWorker` appeared in the commit of 29 April 2024. The key detail in the code: the model must return a JSON array of paths, and each path is checked against the index:
 
 ```kotlin
 return@UserReviewedRequest "Path '$path' doesn't have corresponding knowledge base entry"
@@ -80,8 +82,8 @@ instructions: |-
 
 New fields appeared as they were needed:
 
-- `scopes` (22 May 2024, MTHRN-101). The recipe states whether it is for the backend or the frontend (`RecipeScope`: `Frontend`, `Backend`). Judging by the task's title, the need was a way to keep a recipe from being applied to the wrong part of the project.
-- `snippets` (commit of 7 May 2024, MTHRN-80). Instead of describing code in words, a recipe can contain a ready-made file. Judging by the code (`snippet.source` → `snippet.target`), this is a way to pass library code without paraphrasing it.
+- `scopes` (22 May 2024). The recipe states whether it is for the backend or the frontend (`RecipeScope`: `Frontend`, `Backend`). Judging by the task's title, the need was a way to keep a recipe from being applied to the wrong part of the project.
+- `snippets` (commit of 7 May 2024). Instead of describing code in words, a recipe can contain a ready-made file. Judging by the code (`snippet.source` → `snippet.target`), this is a way to pass library code without paraphrasing it.
 - `protected` (commit of 7 June 2024, "Add an option to mark recipe snippets as protected"). Fragments with this mark are treated as protected. The exact behavior is not described in the commit message; it should be checked in the code.
 - `dependencies` with a pinned version. The commit of 7 May 2024, "Set version of googleapis library in the recipe", fixes the version in the recipe rather than letting the model choose it.
 
@@ -96,17 +98,17 @@ An agent that can run `npm install` can install anything. That is dangerous both
 See `.llm/dependencies.json` for the list of approved dependencies.
 ```
 
-**Step two: a check before installation.** The commit of 7 May 2024 (MTHRN-96), `Check that requested dependencies exist`, added `AddNpmDependencyProjectAction`. Its `review` method runs `npm add --dry-run`: the command attempts the installation without writing to disk. If the package does not exist or the version is not found, the model gets an error before anything has changed.
+**Step two: a check before installation.** The commit of 7 May 2024, `Check that requested dependencies exist`, added `AddNpmDependencyProjectAction`. Its `review` method runs `npm add --dry-run`: the command attempts the installation without writing to disk. If the package does not exist or the version is not found, the model gets an error before anything has changed.
 
 Notice the order: first the allowlist check, then the dry run, and only then the real installation. Each step is cheaper than the previous one, and a rejection at any step leaves no trace.
 
-The commit MTHRN-79 of 6 May 2024 added automatic installation of a recipe's dependencies ("Install required npm dependencies automatically"). Now installation proceeds from the recipe, not from the model's decision.
+The commit of 6 May 2024 added automatic installation of a recipe's dependencies ("Install required npm dependencies automatically"). Now installation proceeds from the recipe, not from the model's decision.
 
 ## 4.5. An error that was rolled back
 
-The most instructive episode is `MTHRN-99 Embed recipe for config into template and guidelines` (14 May 2024). The idea: embed the configuration recipe directly into the template and the instructions, so the model would not have to recall how to read `.env`. Three weeks later it was rolled back: `Revert "...MTHRN-99..."` (4 June 2024), and at the same time `Rollback config from templates and return to the good old process.env` (4 June 2024).
+The most instructive episode is `Embed recipe for config into template and guidelines` (14 May 2024). The idea: embed the configuration recipe directly into the template and the instructions, so the model would not have to recall how to read `.env`. Three weeks later it was rolled back: `Revert "...config..."` (4 June 2024), and at the same time `Rollback config from templates and return to the good old process.env` (4 June 2024).
 
-The reason is not recorded in the commit messages. The sequence of events shows that the decision was not to explain the configuration better, but to return to a simple mechanism that the model cannot get wrong: an environment variable (`process.env`). On the same day, `MTHRN-110 Hardcode backend port in the template` (added 17 May, reverted 4 June) was also rolled back: the backend port had also been baked into the template.
+The reason is not recorded in the commit messages. The sequence of events shows that the decision was not to explain the configuration better, but to return to a simple mechanism that the model cannot get wrong: an environment variable (`process.env`). On the same day, `Hardcode backend port in the template` (added 17 May, reverted 4 June) was also rolled back: the backend port had also been baked into the template.
 
 The lesson for the book: **a recipe is useful for knowledge that the model may apply in different ways, and harmful for things that must be unambiguous**. Configuration is better set by code than by text.
 

@@ -1,5 +1,7 @@
 # Appendix B. Timeline
 
+[← Previous](21-glossary.md) · [Contents](README.md) · [Next →](23-conclusion.md)
+
 The dates are dates of commits on the `main` branch of `junie-repo`, or dates when a concept appeared in the history, as indicated in the chapter. The history was taken as of 18 November 2026. Commits on other branches were not considered. Chapters where each event is discussed are given in parentheses.
 
 ## 2024

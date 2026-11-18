@@ -1,5 +1,7 @@
 # Chapter 12. From the IDE to the Terminal: Standalone and CLI
 
+[← Previous](11-naming-and-rename.md) · [Contents](README.md) · [Next →](13-mcp-and-ide.md)
+
 For the first year and a half the agent lived inside the IDE: from March 2024 to July 2025. It saw the open files, the project index, the tool panel, and the single user sitting in front of the screen. To turn the agent into a product that can be launched in a terminal, in CI, in an editor through a protocol, or in Slack, it had to be separated from the IDE. This chapter is about how that was done, which parts moved, which stayed, and why the hardest part turned out not to be the agent but the launch.
 
 ## 12.1. What "standalone" means

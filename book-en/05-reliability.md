@@ -1,5 +1,7 @@
 # Chapter 5. Reliability: An Agent That Fails Correctly
 
+[← Previous](04-recipes-knowledge.md) · [Contents](README.md) · [Next →](06-modules.md)
+
 Chapters 1–4 described how the agent does its work. This chapter is about what happens when the work goes wrong: the network drops, the model returns 429, the `npm install` command hangs, the user presses "Stop", the budget runs out, and the agent is in the middle of editing a file.
 
 For a demonstration agent these are minor issues. For a product that runs every day they are a large part of the code. Judging by the commit titles in the history of Matterhorn, errors, cancellation, retries, and state come up very often. I did not measure the exact share.

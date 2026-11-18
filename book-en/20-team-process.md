@@ -1,5 +1,7 @@
 # Chapter 20. How a Team and Agents Ship Code Together
 
+[← Previous](19-junie-live.md) · [Contents](README.md) · [Next →](21-glossary.md)
+
 The last chapter of the book is not about the agent but about the people and agents who build it. Over three years the repository's history has acquired about two hundred authors. Roughly a fifth of the commits from the last year carry the trace of Junie: a co-author line. Agents write code, review it, close tasks, and update documentation. And there are fewer people than there are changes.
 
 A natural question follows: how do you keep the parallel work of people and agents from turning into chaos? The answer in this repository is not a single tool but a set of written rules, skills, and automation. This chapter goes through them and shows which decisions work and which exist so far only on paper.

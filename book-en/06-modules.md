@@ -1,5 +1,7 @@
 # Chapter 6. Modules: From Six to Twenty
 
+[← Previous](05-reliability.md) · [Contents](README.md) · [Next →](07-execution-context.md)
+
 An agent that lives in a single module quickly becomes a tangle. Model logic, file handling, the IDE interface, command-line startup, and network calls grow together, and any change touches everything. An agent that must work in the IDE, the terminal, and Slack cannot get by with one module. So the boundary between parts of the code is not a matter of taste: it is the condition under which the product can be extended at all.
 
 In the history of Matterhorn the code was split into modules twice: in September 2024 and in June 2026. In between, the number of modules changed a great deal. This chapter is about which boundaries proved stable and which did not.

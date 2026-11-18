@@ -1,5 +1,7 @@
 # Chapter 15. The Sandbox: Constraining the Agent Without Paralyzing It
 
+[← Previous](14-context-management.md) · [Contents](README.md) · [Next →](16-multi-model.md)
+
 An agent that runs commands in a terminal can do anything to the machine that the user can do. It can delete files outside the project, read keys from `~/.ssh`, download a stranger's script and run it. Usually this is prevented by confirmations (Chapter 8): the agent asks for permission for every command. But confirmations quickly turn into noise: if the user clicks "yes" a hundred times during a task, they stop reading. What is needed is another layer: a sandbox that limits what a command can do, regardless of what the user approved.
 
 This chapter describes how the sandbox works in Junie, what it protects, where its boundaries are, and why its delivery turned out to be harder than the idea itself.
